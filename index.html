@@ -1,434 +1,309 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ফুয়েল পাম্প সেলস ক্যালকুলেটর</title>
+    <title>Al-Jeezar Station Pro</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Tahoma, sans-serif;
-        }
-
-        body {
-            background-color: #f0f4f8;
-            padding: 15px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            color: #1a4f8a;
-            font-size: 22px;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .rate-box {
-            background-color: #eef7f6;
-            border: 1px solid #bce2de;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 20px;
-        }
-
-        .rate-box label {
-            display: block;
-            font-weight: 600;
-            color: #0f5132;
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            border-color: #3b82f6;
-        }
-
-        .calc-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .calc-card h3 {
-            font-size: 15px;
-            color: #334155;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .input-with-btn {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-inline-save {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 0 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .btn-inline-save:active {
-            background: #1d4ed8;
-        }
-
-        .placeholder-hint {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 4px;
-            display: block;
-        }
-
-        .result-container {
-            margin-top: 20px;
-            background: #1e3a8a;
-            color: white;
-            border-radius: 12px;
-            padding: 15px;
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .result-row:last-child {
-            border-bottom: none;
-        }
-
-        .result-row span:first-child {
-            font-size: 15px;
-            opacity: 0.9;
-        }
-
-        .result-row span:last-child {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .btn-save {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-save:active {
-            background: #059669;
-        }
-
-        .btn-reset {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-reset:active {
-            background: #dc2626;
-        }
-
-        .history-section {
-            margin-top: 25px;
-            border-top: 2px dashed #cbd5e1;
-            padding-top: 20px;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .history-header h2 {
-            font-size: 16px;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-clear-history {
-            background: none;
-            border: none;
-            color: #ef4444;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .history-card {
-            background: #f1f5f9;
-            border-left: 4px solid #10b981;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-
-        .history-time {
-            color: #64748b;
-            font-size: 11px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .history-details {
-            display: flex;
-            justify-content: space-between;
-            color: #334155;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #0f172a; padding: 20px 15px; color: #f8fafc; }
+        .app-container { width: 100%; max-width: 480px; margin: 0 auto; }
+        
+        .app-header { background: #1e293b; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; border-top: 4px solid #10b981; }
+        .app-header h1 { font-size: 24px; color: #fbbf24; margin-bottom: 5px; }
+        .app-header p { font-size: 13px; color: #94a3b8; }
+        
+        .glass-card { background: #1e293b; padding: 18px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .card-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #cbd5e1; }
+        .ar-text { font-size: 12px; color: #94a3b8; }
+        
+        .neo-input { width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 10px; color: #ffffff; font-size: 16px; outline: none; }
+        .input-group { display: flex; gap: 10px; }
+        .btn-lock { background: #d97706; color: white; border: none; padding: 0 15px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+        
+        .slip-rate-box { width: 90px; text-align: center; border: 1px solid #fbbf24; color: #fbbf24; font-weight: bold; }
+        
+        .dashboard-panel { background: #0f172a; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .dash-row:last-child { border-bottom: none; }
+        
+        .en-text { font-size: 14px; color: #cbd5e1; display: flex; flex-direction: column; font-weight: 600; }
+        .en-text small { font-size: 12px; color: #94a3b8; margin-top: 2px; font-weight: normal; }
+        .dash-val { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+        
+        .grand-total-row { background: rgba(16, 185, 129, 0.1); margin: 10px -15px 0 -15px; padding: 15px; border-top: 1px solid rgba(16, 185, 129, 0.2); border-bottom: 1px solid rgba(16, 185, 129, 0.2); }
+        .grand-total-row .en-text { color: #a7f3d0; }
+        .grand-total-row .dash-val { color: #34d399; font-size: 22px; }
+        
+        .cash-total-row { background: rgba(59, 130, 246, 0.1); margin: 0 -15px -15px -15px; padding: 15px; border-radius: 0 0 16px 16px; }
+        .cash-total-row .en-text { color: #93c5fd; }
+        .cash-total-row .dash-val { color: #60a5fa; font-size: 22px; }
+        
+        .grid-actions { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-main { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .btn-main.success { background: #10b981; color: white; }
+        .btn-main.danger { background: #ef4444; color: white; }
+        
+        .history-title-bar { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #94a3b8; }
+        .btn-clear-all { background: none; border: none; color: #f87171; cursor: pointer; font-weight: bold; }
+        .history-box { display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; }
+        .log-item { background: #1e293b; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .log-time { font-size: 11px; color: #94a3b8; }
+        .log-liters { font-size: 13px; color: #38bdf8; font-weight: bold; }
+        .log-time-group { display: flex; flex-direction: column; }
+        .log-money { font-size: 15px; color: #10b981; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h1>⛽ ফুয়েল পাম্প ক্যালকুলেটর</h1>
-            <p>সহজ এক-লাইন ইনপুট ও অটো হিসাব</p>
+    <div class="app-container">
+        <div class="app-header">
+            <h1>⛽ Al-Jeezar Station Pro</h1>
+            <p>Automated Sales Intelligence | حاسبة الوقود الذكية</p>
         </div>
 
-        <div class="rate-box">
-            <label for="fuelPrice">প্রতি লিটার ফুয়েলের দাম (টাকা/দিনার):</label>
-            <input type="number" id="fuelPrice" class="input-field" value="458" oninput="calculateSales()">
+        <!-- General Fuel Price -->
+        <div class="glass-card">
+            <div class="card-label">
+                <span>Fuel Rate (Per Liter)</span>
+                <span class="ar-text">سعر اللتر</span>
+            </div>
+            <input type="number" id="priceInput" class="neo-input" value="458" oninput="runEngine()">
         </div>
 
-        <div class="calc-card">
-            <h3>শুরুর রিডিং (সকাল/আগের)</h3>
-            <div class="input-with-btn">
-                <input type="text" id="startReadings" class="input-field" placeholder="যেমন: 368,626 + 1,230,665" oninput="calculateSales()">
-                <button class="btn-inline-save" onclick="saveStartReading()">🔒 লক করুন</button>
+        <!-- Start Input -->
+        <div class="glass-card">
+            <div class="card-label">
+                <span>Opening Readings</span>
+                <span class="ar-text">القراءة الأولى</span>
             </div>
-            <span class="placeholder-hint">ডিউটি শুরুতে রিডিং পেস্ট করে "লক করুন" চাপুন</span>
-        </div>
-
-        <div class="calc-card">
-            <h3>শেষের রিডিং (রানিং/বর্তমান)</h3>
-            <input type="text" id="endReadings" class="input-field" placeholder="যেমন: 370,905 + 1,234,118" oninput="calculateSales()">
-            <span class="placeholder-hint">ঝামেলার সময় কারেন্ট রিডিং পেস্ট করলেই হিসাব চলে আসবে</span>
-        </div>
-
-        <div class="result-container">
-            <div class="result-row">
-                <span>মোট শুরুর রিডিং:</span>
-                <span id="totalStart">0</span>
-            </div>
-            <div class="result-row">
-                <span>মোট শেষের রিডিং:</span>
-                <span id="totalEnd">0</span>
-            </div>
-            <div class="result-row" style="color: #4ade80;">
-                <span>মোট বিক্রিত লিটার:</span>
-                <span id="totalLiters">0.00 L</span>
-            </div>
-            <div class="result-row" style="color: #60a5fa; border-top: 2px solid rgba(255,255,255,0.2); padding-top: 12px; margin-top: 4px;">
-                <span>মোট বিক্রয় মূল্য:</span>
-                <span id="totalAmount">0.00</span>
+            <div class="input-group">
+                <input type="text" id="startInput" class="neo-input" placeholder="12345" oninput="runEngine()">
+                <button class="btn-lock" onclick="lockOpeningData()">🔒 LOCK</button>
             </div>
         </div>
 
-        <div class="action-buttons">
-            <button class="btn btn-save" onclick="saveToHistory()">💾 এই হিসাবটি সেভ করুন</button>
-            <button class="btn btn-reset" onclick="resetForm()">শেষের রিডিং মুছুন</button>
+        <!-- End Input -->
+        <div class="glass-card">
+            <div class="card-label">
+                <span>Closing Readings</span>
+                <span class="ar-text">القراءة الأخيرة</span>
+            </div>
+            <input type="text" id="endInput" class="neo-input" placeholder="12345" oninput="runEngine()">
         </div>
 
+        <!-- Company Slip Input with Inline Rate Box -->
+        <div class="glass-card" style="border-left: 4px solid #fbbf24;">
+            <div class="card-label">
+                <span style="color:#fbbf24;">Company Slips (Liters) & Rate</span>
+                <span class="ar-text">وصل الشركات والشركة</span>
+            </div>
+            <div class="input-group">
+                <input type="text" id="slipInput" class="neo-input" placeholder="Liters (12345)" oninput="runEngine()">
+                <input type="number" id="slipPriceInput" class="neo-input slip-rate-box" value="460" placeholder="Rate" oninput="runEngine()">
+            </div>
+        </div>
+
+        <!-- Card / POS Payment Input -->
+        <div class="glass-card" style="border-left: 4px solid #60a5fa;">
+            <div class="card-label">
+                <span style="color:#60a5fa;">Card Payment / POS (Money)</span>
+                <span class="ar-text">الدفع بالبطاقة</span>
+            </div>
+            <input type="text" id="cardPaymentInput" class="neo-input" placeholder="12345" oninput="runEngine()">
+        </div>
+
+        <!-- Dashboard Panel -->
+        <div class="dashboard-panel">
+            <div class="dash-row">
+                <span class="en-text">Total Opening<small>إجمالي الصباح</small></span>
+                <span id="viewStart" class="dash-val">0</span>
+            </div>
+            <div class="dash-row">
+                <span class="en-text">Total Closing<small>إجمالي الليل</small></span>
+                <span id="viewEnd" class="dash-val">0</span>
+            </div>
+            <div class="dash-row">
+                <span class="en-text" style="color:#fbbf24;">Company Slips (Volume)<small>وصل الشركات</small></span>
+                <span id="viewSlips" class="dash-val" style="color:#fbbf24;">0.00 L</span>
+            </div>
+            <div class="dash-row">
+                <span class="en-text" style="color:#38bdf8;">Total Meter Liters<small>إجمالي اللترات</small></span>
+                <span id="viewLiters" class="dash-val" style="color:#38bdf8;">0.00 L</span>
+            </div>
+            <div class="dash-row grand-total-row">
+                <span class="en-text">Total Amount Due<small>إجمالي المبلغ المطلوب</small></span>
+                <span id="viewAmount" class="dash-val">0.00</span>
+            </div>
+            <div class="dash-row cash-total-row">
+                <span class="en-text">Net Cash To Collect<small>صافي المبلغ النقدي</small></span>
+                <span id="viewCash" class="dash-val">0.00</span>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="grid-actions">
+            <button class="btn-main success" onclick="commitRecord()">💾 SAVE REPORT</button>
+            <button class="btn-main danger" onclick="clearClosingField()">CLEAR END</button>
+        </div>
+
+        <!-- History -->
         <div class="history-section">
-            <div class="history-header">
-                <h2>🕒 সংরক্ষিত হিস্ট্রি (রেকড়)</h2>
-                <button class="btn-clear-history" onclick="clearHistory()">সব মুছুন</button>
+            <div class="history-title-bar">
+                <span>📊 SHIFT LOGS | السجلات</span>
+                <button class="btn-clear-all" onclick="purgeLogs()">Clear Logs</button>
             </div>
-            <div class="history-list" id="historyList">
-                </div>
+            <div class="history-box" id="logBox"></div>
         </div>
     </div>
 
     <script>
-        // পেজ লোড হলে সেভ করা শুরুর রিডিং ও হিস্ট্রি লোড হবে
-        document.addEventListener("DOMContentLoaded", function() {
-            let savedStart = localStorage.getItem("savedStartReading");
-            if (savedStart) {
-                document.getElementById('startReadings').value = savedStart;
-            }
-            displayHistory();
-            calculateSales();
-        });
+        window.onload = function() {
+            var cachedStart = localStorage.getItem("pro_station_start");
+            if (cachedStart) { document.getElementById('startInput').value = cachedStart; }
+            renderLogs();
+            runEngine();
+        };
 
-        function parseAndSum(stringValue) {
-            if (!stringValue) return 0;
-            let parts = stringValue.split('+');
-            let sum = 0;
-            for (let part of parts) {
-                let cleanNum = part.replace(/,/g, '').trim();
-                if (cleanNum !== '') {
-                    let parsed = parseFloat(cleanNum);
-                    if (!isNaN(parsed)) {
-                        sum += parsed;
+        function parseFormula(inputStr) {
+            if (!inputStr) return 0;
+            var segments = inputStr.split('+');
+            var grandSum = 0;
+            for (var i = 0; i < segments.length; i++) {
+                var processed = segments[i].replace(/,/g, '').trim();
+                if (processed !== '') {
+                    var num = parseFloat(processed);
+                    if (!isNaN(num)) { grandSum += num; }
+                }
+            }
+            return grandSum;
+        }
+
+        // কার্ড ইনপুটের জন্য বিশেষ ফাংশন (যা শর্টকাট সংখ্যাকে ১০০০ দিয়ে গুণ করবে)
+        function parseCardFormula(inputStr) {
+            if (!inputStr) return 0;
+            var segments = inputStr.split('+');
+            var grandSum = 0;
+            for (var i = 0; i < segments.length; i++) {
+                var processed = segments[i].replace(/,/g, '').trim();
+                if (processed !== '') {
+                    var num = parseFloat(processed);
+                    if (!isNaN(num)) { 
+                        // যদি ইনপুট ১০০ এর কম হয় (যেমন ৭, ১০, ১৩), তবে তাকে ১০০০ দিয়ে গুণ করে ট্রিপল জিরো করা হবে
+                        if (num < 100) {
+                            grandSum += (num * 1000);
+                        } else {
+                            grandSum += num;
+                        }
                     }
                 }
             }
-            return sum;
+            return grandSum;
         }
 
-        let calculatedLiters = 0;
-        let calculatedAmount = 0;
+        var GlobalLiters = 0; var GlobalAmount = 0; var NetCash = 0;
 
-        function calculateSales() {
-            let price = parseFloat(document.getElementById('fuelPrice').value) || 0;
-            let startText = document.getElementById('startReadings').value;
-            let endText = document.getElementById('endReadings').value;
+        function runEngine() {
+            var fuelPrice = parseFloat(document.getElementById('priceInput').value) || 0;
+            var slipPrice = parseFloat(document.getElementById('slipPriceInput').value) || 0; 
+            var openingRaw = document.getElementById('startInput').value;
+            var closingRaw = document.getElementById('endInput').value;
+            var slipsRaw = document.getElementById('slipInput').value;
+            var cardsRaw = document.getElementById('cardPaymentInput').value;
 
-            let totalStart = parseAndSum(startText);
-            let totalEnd = parseAndSum(endText);
+            var sumOpening = parseFormula(openingRaw);
+            var sumClosing = parseFormula(closingRaw);
+            var sumSlipsLiters = parseFormula(slipsRaw);
+            var sumCardsMoney = parseCardFormula(cardsRaw); // ট্রিপল জিরো অটো-কনভার্ট হবে
 
-            calculatedLiters = totalEnd - totalStart;
-            if (calculatedLiters < 0) calculatedLiters = 0;
+            // ১. টোটাল মিটার লিটার বের করা
+            GlobalLiters = sumClosing - sumOpening;
+            if (GlobalLiters < 0) GlobalLiters = 0;
+
+            // ২. আসল তেলের বেচা বিক্রি = মিটারের মোট লিটার * মেইন তেলের রেট
+            var totalMeterValue = GlobalLiters * fuelPrice;
             
-            calculatedAmount = calculatedLiters * price;
+            // ৩. কোম্পানির স্লিপের টাকা = স্লিপ লিটার * স্লিপ রেট
+            var slipsAmount = sumSlipsLiters * slipPrice; 
 
-            document.getElementById('totalStart').innerText = totalStart.toLocaleString();
-            document.getElementById('totalEnd').innerText = totalEnd.toLocaleString();
-            document.getElementById('totalLiters').innerText = calculatedLiters.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " L";
-            document.getElementById('totalAmount').innerText = calculatedAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            // ৪. Total Amount Due = মিটারের মোট টাকা থেকে কোম্পানির স্লিপের টাকা মাইনাস (MINUS)
+            GlobalAmount = totalMeterValue - slipsAmount;
+
+            // ৫. Net Cash To Collect = Total Amount থেকে আবার কার্ডের টাকাও মাইনাস (MINUS)
+            NetCash = GlobalAmount - sumCardsMoney;
+
+            document.getElementById('viewStart').innerText = sumOpening.toFixed(0);
+            document.getElementById('viewEnd').innerText = sumClosing.toFixed(0);
+            document.getElementById('viewSlips').innerText = sumSlipsLiters.toFixed(2) + " L";
+            document.getElementById('viewLiters').innerText = GlobalLiters.toFixed(2) + " L";
+            document.getElementById('viewAmount').innerText = GlobalAmount.toFixed(2);
+            document.getElementById('viewCash').innerText = NetCash.toFixed(2);
         }
 
-        // শুরুর রিডিং মেমোরিতে লক করার ফাংশন
-        function saveStartReading() {
-            let startText = document.getElementById('startReadings').value;
-            if (!startText.trim()) {
-                alert("দয়া করে প্রথমে শুরুর রিডিং ইনপুট দিন!");
-                return;
-            }
-            localStorage.setItem("savedStartReading", startText);
-            alert("শুরুর রিডিং মেমোরিতে লক করা হয়েছে!");
+        function lockOpeningData() {
+            var inputData = document.getElementById('startInput').value;
+            if (!inputData.trim()) { alert("Enter opening data first!"); return; }
+            localStorage.setItem("pro_station_start", inputData);
+            alert("Opening structure locked!");
         }
 
-        // হিস্ট্রি সেভ করার ফাংশন (এখন আর শুরুর রিডিং ডিলেট হবে না)
-        function saveToHistory() {
-            if (calculatedLiters <= 0) {
-                alert("সংরক্ষণ করার মতো কোনো বিক্রির হিসাব নেই!");
-                return;
+        function commitRecord() {
+            if (GlobalLiters <= 0 && parseFormula(document.getElementById('slipInput').value) <= 0) { 
+                alert("No sales record to save."); 
+                return; 
             }
+            var timestamp = new Date();
+            var dateString = timestamp.toLocaleDateString();
+            var timeString = timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-            let now = new Date();
-            let timeString = now.toLocaleDateString('bn-BD') + " | " + now.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
-
-            let record = {
-                time: timeString,
-                liters: calculatedLiters.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " L",
-                amount: calculatedAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+            var logEntry = {
+                timestamp: dateString + " (" + timeString + ")",
+                volume: GlobalLiters.toFixed(2) + " L",
+                totalCash: NetCash.toFixed(2)
             };
 
-            let history = JSON.parse(localStorage.getItem("fuelHistory")) || [];
-            history.unshift(record);
-            localStorage.setItem("fuelHistory", JSON.stringify(history));
+            var database = JSON.parse(localStorage.getItem("pro_station_logs")) || [];
+            database.unshift(logEntry);
+            localStorage.setItem("pro_station_logs", JSON.stringify(database));
 
-            displayHistory();
-            
-            // নিচের ইনপুট বক্সটি ক্লিয়ার করে দেওয়া যাতে পরের বার চেক করা সহজ হয়
-            document.getElementById('endReadings').value = '';
-            calculateSales();
-            alert("হিসাবটি নিচে সফলভাবে সেভ করা হয়েছে!");
+            renderLogs();
+            document.getElementById('endInput').value = '';
+            document.getElementById('slipInput').value = '';
+            document.getElementById('cardPaymentInput').value = '';
+            runEngine();
+            alert("Report saved successfully!");
         }
 
-        function displayHistory() {
-            let history = JSON.parse(localStorage.getItem("fuelHistory")) || [];
-            let historyList = document.getElementById("historyList");
-            historyList.innerHTML = "";
-
-            if (history.length === 0) {
-                historyList.innerHTML = "<p style='color:#94a3b8; font-size:13px; text-align:center; padding:10px;'>কোনো হিস্ট্রি রেকর্ড সেভ করা নেই।</p>";
+        function renderLogs() {
+            var database = JSON.parse(localStorage.getItem("pro_station_logs")) || [];
+            var logBox = document.getElementById("logBox");
+            logBox.innerHTML = "";
+            if (database.length === 0) {
+                logBox.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>No history found.</p>";
                 return;
             }
-
-            history.forEach(function(item) {
-                let card = document.createElement("div");
-                card.className = "history-card";
-                card.innerHTML = `
-                    <div class="history-time">📅 ${item.time}</div>
-                    <div class="history-details">
-                        <span><strong>লিটার:</strong> ${item.liters}</span>
-                        <span><strong>মোট টাকা:</strong> ${item.amount}</span>
-                    </div>
-                `;
-                historyList.appendChild(card);
-            });
-        }
-
-        function clearHistory() {
-            if (confirm("আপনি কি নিশ্চিত যে সব হিস্ট্রি রেকর্ড মুছে ফেলতে চান?")) {
-                localStorage.removeItem("fuelHistory");
-                displayHistory();
+            for (var i = 0; i < database.length; i++) {
+                var item = database[i];
+                var node = document.createElement("div");
+                node.className = "log-item";
+                node.innerHTML = '<div class="log-time-group">' +
+                                    '<div class="log-time">📅 ' + item.timestamp + '</div>' +
+                                    '<div class="log-liters">Vol: ' + item.volume + '</div>' +
+                                 '</div>' +
+                                 '<div class="log-money">Cash: ' + item.totalCash + '</div>';
+                logBox.appendChild(node);
             }
         }
 
-        // রিসেট বাটন চাপলে শুধু শেষের ঘর ফাকা হবে, লক করা ডেটা থাকবে
-        function resetForm() {
-            document.getElementById('endReadings').value = '';
-            calculateSales();
+        function purgeLogs() {
+            if (confirm("Clear all logs?")) { localStorage.removeItem("pro_station_logs"); renderLogs(); }
+        }
+
+        function clearClosingField() {
+            document.getElementById('endInput').value = '';
+            document.getElementById('slipInput').value = '';
+            document.getElementById('cardPaymentInput').value = '';
+            runEngine();
         }
     </script>
 </body>
