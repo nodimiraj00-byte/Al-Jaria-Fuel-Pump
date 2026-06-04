@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফুয়েল পাম্প সেলস ক্যালকুলেটর</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            padding: 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #1a4f8a;
+            font-size: 22px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .rate-box {
+            background-color: #eef7f6;
+            border: 1px solid #bce2de;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        .rate-box label {
+            display: block;
+            font-weight: 600;
+            color: #0f5132;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+        }
+
+        .calc-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .calc-card h3 {
+            font-size: 15px;
+            color: #334155;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-with-btn {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-inline-save {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-inline-save:active {
+            background: #1d4ed8;
+        }
+
+        .placeholder-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-row span:first-child {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .result-row span:last-child {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-save {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-save:active {
+            background: #059669;
+        }
+
+        .btn-reset {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-reset:active {
+            background: #dc2626;
+        }
+
+        .history-section {
+            margin-top: 25px;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 20px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .history-header h2 {
+            font-size: 16px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-clear-history {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .history-card {
+            background: #f1f5f9;
+            border-left: 4px solid #10b981;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .history-time {
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .history-details {
+            display: flex;
+            justify-content: space-between;
+            color: #334155;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>⛽ ফুয়েল পাম্প ক্যালকুলেটর</h1>
+            <p>সহজ এক-লাইন ইনপুট ও অটো হিসাব</p>
+        </div>
+
+        <div class="rate-box">
+            <label for="fuelPrice">প্রতি লিটার ফুয়েলের দাম (টাকা/দিনার):</label>
+            <input type="number" id="fuelPrice" class="input-field" value="458" oninput="calculateSales()">
+        </div>
+
+        <div class="calc-card">
+            <h3>শুরুর রিডিং (সকাল/আগের)</h3>
+            <div class="input-with-btn">
+                <input type="text" id="startReadings" class="input-field" placeholder="যেমন: 368,626 + 1,230,665" oninput="calculateSales()">
+                <button class="btn-inline-save" onclick="saveStartReading()">🔒 লক করুন</button>
+            </div>
+            <span class="placeholder-hint">ডিউটি শুরুতে রিডিং পেস্ট করে "লক করুন" চাপুন</span>
+        </div>
+
+        <div class="calc-card">
+            <h3>শেষের রিডিং (রানিং/বর্তমান)</h3>
+            <input type="text" id="endReadings" class="input-field" placeholder="যেমন: 370,905 + 1,234,118" oninput="calculateSales()">
+            <span class="placeholder-hint">ঝামেলার সময় কারেন্ট রিডিং পেস্ট করলেই হিসাব চলে আসবে</span>
+        </div>
+
+        <div class="result-container">
+            <div class="result-row">
+                <span>মোট শুরুর রিডিং:</span>
+                <span id="totalStart">0</span>
+            </div>
+            <div class="result-row">
+                <span>মোট শেষের রিডিং:</span>
+                <span id="totalEnd">0</span>
+            </div>
+            <div class="result-row" style="color: #4ade80;">
+                <span>মোট বিক্রিত লিটার:</span>
+                <span id="totalLiters">0.00 L</span>
+            </div>
+            <div class="result-row" style="color: #60a5fa; border-top: 2px solid rgba(255,255,255,0.2); padding-top: 12px; margin-top: 4px;">
+                <span>মোট বিক্রয় মূল্য:</span>
+                <span id="totalAmount">0.00</span>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-save" onclick="saveToHistory()">💾 এই হিসাবটি সেভ করুন</button>
+            <button class="btn btn-reset" onclick="resetForm()">শেষের রিডিং মুছুন</button>
+        </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <h2>🕒 সংরক্ষিত হিস্ট্রি (রেকড়)</h2>
+                <button class="btn-clear-history" onclick="clearHistory()">সব মুছুন</button>
+            </div>
+            <div class="history-list" id="historyList">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // পেজ লোড হলে সেভ করা শুরুর রিডিং ও হিস্ট্রি লোড হবে
+        document.addEventListener("DOMContentLoaded", function() {
+            let savedStart = localStorage.getItem("savedStartReading");
+            if (savedStart) {
+                document.getElementById('startReadings').value = savedStart;
+            }
+            displayHistory();
+            calculateSales();
+        });
+
+        function parseAndSum(stringValue) {
+            if (!stringValue) return 0;
+            let parts = stringValue.split('+');
+            let sum = 0;
+            for (let part of parts) {
+                let cleanNum = part.replace(/,/g, '').trim();
+                if (cleanNum !== '') {
+                    let parsed = parseFloat(cleanNum);
+                    if (!isNaN(parsed)) {
+                        sum += parsed;
+                    }
+                }
+            }
+            return sum;
+        }
+
+        let calculatedLiters = 0;
+        let calculatedAmount = 0;
+
+        function calculateSales() {
+            let price = parseFloat(document.getElementById('fuelPrice').value) || 0;
+            let startText = document.getElementById('startReadings').value;
+            let endText = document.getElementById('endReadings').value;
+
+            let totalStart = parseAndSum(startText);
+            let totalEnd = parseAndSum(endText);
+
+            calculatedLiters = totalEnd - totalStart;
+            if (calculatedLiters < 0) calculatedLiters = 0;
+            
+            calculatedAmount = calculatedLiters * price;
+
+            document.getElementById('totalStart').innerText = totalStart.toLocaleString();
+            document.getElementById('totalEnd').innerText = totalEnd.toLocaleString();
+            document.getElementById('totalLiters').innerText = calculatedLiters.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " L";
+            document.getElementById('totalAmount').innerText = calculatedAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        // শুরুর রিডিং মেমোরিতে লক করার ফাংশন
+        function saveStartReading() {
+            let startText = document.getElementById('startReadings').value;
+            if (!startText.trim()) {
+                alert("দয়া করে প্রথমে শুরুর রিডিং ইনপুট দিন!");
+                return;
+            }
+            localStorage.setItem("savedStartReading", startText);
+            alert("শুরুর রিডিং মেমোরিতে লক করা হয়েছে!");
+        }
+
+        // হিস্ট্রি সেভ করার ফাংশন (এখন আর শুরুর রিডিং ডিলেট হবে না)
+        function saveToHistory() {
+            if (calculatedLiters <= 0) {
+                alert("সংরক্ষণ করার মতো কোনো বিক্রির হিসাব নেই!");
+                return;
+            }
+
+            let now = new Date();
+            let timeString = now.toLocaleDateString('bn-BD') + " | " + now.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+
+            let record = {
+                time: timeString,
+                liters: calculatedLiters.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " L",
+                amount: calculatedAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+            };
+
+            let history = JSON.parse(localStorage.getItem("fuelHistory")) || [];
+            history.unshift(record);
+            localStorage.setItem("fuelHistory", JSON.stringify(history));
+
+            displayHistory();
+            
+            // নিচের ইনপুট বক্সটি ক্লিয়ার করে দেওয়া যাতে পরের বার চেক করা সহজ হয়
+            document.getElementById('endReadings').value = '';
+            calculateSales();
+            alert("হিসাবটি নিচে সফলভাবে সেভ করা হয়েছে!");
+        }
+
+        function displayHistory() {
+            let history = JSON.parse(localStorage.getItem("fuelHistory")) || [];
+            let historyList = document.getElementById("historyList");
+            historyList.innerHTML = "";
+
+            if (history.length === 0) {
+                historyList.innerHTML = "<p style='color:#94a3b8; font-size:13px; text-align:center; padding:10px;'>কোনো হিস্ট্রি রেকর্ড সেভ করা নেই।</p>";
+                return;
+            }
+
+            history.forEach(function(item) {
+                let card = document.createElement("div");
+                card.className = "history-card";
+                card.innerHTML = `
+                    <div class="history-time">📅 ${item.time}</div>
+                    <div class="history-details">
+                        <span><strong>লিটার:</strong> ${item.liters}</span>
+                        <span><strong>মোট টাকা:</strong> ${item.amount}</span>
+                    </div>
+                `;
+                historyList.appendChild(card);
+            });
+        }
+
+        function clearHistory() {
+            if (confirm("আপনি কি নিশ্চিত যে সব হিস্ট্রি রেকর্ড মুছে ফেলতে চান?")) {
+                localStorage.removeItem("fuelHistory");
+                displayHistory();
+            }
+        }
+
+        // রিসেট বাটন চাপলে শুধু শেষের ঘর ফাকা হবে, লক করা ডেটা থাকবে
+        function resetForm() {
+            document.getElementById('endReadings').value = '';
+            calculateSales();
+        }
+    </script>
+</body>
+</html>
