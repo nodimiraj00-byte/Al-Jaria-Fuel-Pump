@@ -2,125 +2,235 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Jeezar Station Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fadoli Station Pro</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background: #0f172a; padding: 20px 15px; color: #f8fafc; }
+        body { background: #0b111e; padding: 15px 10px 420px 10px; color: #f8fafc; } 
         .app-container { width: 100%; max-width: 480px; margin: 0 auto; }
         
-        .app-header { background: #1e293b; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; border-top: 4px solid #10b981; }
-        .app-header h1 { font-size: 24px; color: #fbbf24; margin-bottom: 5px; }
-        .app-header p { font-size: 13px; color: #94a3b8; }
+        /* 👑 প্রিমিয়াম হেডার */
+        .app-header { 
+            background: #141f32; padding: 16px; border-radius: 20px; text-align: center; margin-bottom: 16px; 
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 25px rgba(16, 185, 129, 0.15);
+        }
+        .app-header h1 { font-size: 24px; color: #fbbf24; margin-bottom: 5px; font-weight: 700; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        .live-clock { font-size: 13px; color: #38bdf8; font-weight: 600; letter-spacing: 0.5px; }
         
-        .glass-card { background: #1e293b; padding: 18px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .card-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #cbd5e1; }
-        .ar-text { font-size: 12px; color: #94a3b8; }
+        /* 🔮 মডার্ন কার্ড ডিজাইন */
+        .glass-card { 
+            background: #141f32; padding: 16px; border-radius: 18px; margin-bottom: 14px; 
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        .card-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; font-weight: 600; color: #cbd5e1; align-items: center; }
+        .ar-text { font-size: 12px; color: #94a3b8; font-weight: normal; }
+        .bn-inline { color: #38bdf8; font-weight: bold; font-size: 12px; margin-left: 4px; }
         
-        .neo-input { width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 10px; color: #ffffff; font-size: 16px; outline: none; }
-        .input-group { display: flex; gap: 10px; }
-        .btn-lock { background: #d97706; color: white; border: none; padding: 0 15px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+        /* 🎨 ইনপুট কন্টেইনার গ্রুপ ফিক্স */
+        .input-group { display: flex; gap: 12px; align-items: center; width: 100%; justify-content: space-between; }
+        .input-container-rel { position: relative; flex: 1; display: flex; align-items: center; overflow: hidden; border-radius: 12px; }
         
-        .slip-rate-box { width: 90px; text-align: center; border: 1px solid #fbbf24; color: #fbbf24; font-weight: bold; }
+        /* ⚡ আল্ট্রা নিয়ন গ্লোইং ইনপুট বক্স */
+        .neo-input { 
+            width: 100%; background: #090d16; 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 16px; border-radius: 12px; color: #ffffff; font-size: 17px; outline: none; text-align: left;
+            transition: all 0.25s ease-in-out;
+            white-space: nowrap;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
         
-        .dashboard-panel { background: #0f172a; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        /* 🌟 ৪৬০ রেট বক্সের জন্য পারফেক্ট বর্ডার ও গ্লো ফিক্স */
+        .neo-input.slip-rate-box { 
+            width: 100px;
+            text-align: center; 
+            border: 2px solid #fbbf24 !important; /* চারদিকের বর্ডার সমান ও ক্লিয়ার */
+            color: #fbbf24; 
+            font-weight: 800; 
+            background: #0f1624;
+            box-shadow: 0 0 14px rgba(251, 191, 36, 0.25), inset 0 0 6px rgba(251, 191, 36, 0.15);
+            text-shadow: 0 0 5px rgba(251, 191, 36, 0.4);
+        }
+        
+        /* 🔹 বক্স সিলেক্ট করলে সায়ান গ্লো */
+        .neo-input.active-focused {
+            border-color: #38bdf8 !important;
+            background: #0d1726;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.5), inset 0 1px 3px rgba(0,0,0,0.4);
+        }
+        
+        /* 🔸 ৪৬০ বক্সে ক্লিক করলে স্পেশাল গোল্ডেন ফোকাস */
+        .neo-input.slip-rate-box.active-focused {
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.6), inset 0 0 8px rgba(245, 158, 11, 0.3);
+        }
+        
+        /* ✨ ব্লঙ্কিং কার্সর */
+        .custom-cursor {
+            position: absolute; width: 2px; height: 22px; background-color: #38bdf8;
+            animation: cursorBlink 1s step-end infinite; display: none; pointer-events: none; z-index: 10;
+        }
+        @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* 🔘 বাটন স্টাইল */
+        .btn-lock { background: #d97706; color: white; border: none; padding: 0 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; height: 50px; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25); }
+        .btn-lock:active { background: #b45309; }
+        
+        .camera-btn-wrapper { position: relative; overflow: hidden; display: inline-block; }
+        .btn-scan { background: #2563eb; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .hidden-camera-input { position: absolute; left: 0; top: 0; opacity: 0; scale: 3; cursor: pointer; }
+        
+        .scan-status { font-size: 12px; color: #38bdf8; margin-top: 6px; display: none; text-align: center; font-weight: bold; background: rgba(56, 189, 248, 0.1); padding: 6px; border-radius: 6px; }
+        
+        /* 📊 ড্যাশবোর্ড প্যানেল */
+        .dashboard-panel { background: #141f32; border-radius: 18px; padding: 16px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
         .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .dash-row:last-child { border-bottom: none; }
         
-        .en-text { font-size: 14px; color: #cbd5e1; display: flex; flex-direction: column; font-weight: 600; }
-        .en-text small { font-size: 12px; color: #94a3b8; margin-top: 2px; font-weight: normal; }
+        .en-text { font-size: 13px; color: #cbd5e1; display: flex; flex-direction: column; font-weight: 600; }
+        .en-text small { font-size: 11px; color: #94a3b8; margin-top: 2px; font-weight: normal; }
         .dash-val { font-size: 16px; font-weight: 700; color: #f1f5f9; }
         
-        .grand-total-row { background: rgba(16, 185, 129, 0.1); margin: 10px -15px 0 -15px; padding: 15px; border-top: 1px solid rgba(16, 185, 129, 0.2); border-bottom: 1px solid rgba(16, 185, 129, 0.2); }
+        .grand-total-row { background: rgba(16, 185, 129, 0.12); margin: 10px -16px 0 -16px; padding: 14px 16px; border-top: 1px solid rgba(16, 185, 129, 0.25); border-bottom: 1px solid rgba(16, 185, 129, 0.25); }
         .grand-total-row .en-text { color: #a7f3d0; }
-        .grand-total-row .dash-val { color: #34d399; font-size: 22px; }
+        .grand-total-row .dash-val { color: #10b981; font-size: 22px; text-shadow: 0 0 12px rgba(16, 185, 129, 0.35); }
         
-        .cash-total-row { background: rgba(59, 130, 246, 0.1); margin: 0 -15px -15px -15px; padding: 15px; border-radius: 0 0 16px 16px; }
+        .cash-total-row { background: rgba(59, 130, 246, 0.12); margin: 0 -16px -16px -16px; padding: 14px 16px; border-radius: 0 0 18px 18px; border-top: 1px solid rgba(59, 130, 246, 0.2); }
         .cash-total-row .en-text { color: #93c5fd; }
-        .cash-total-row .dash-val { color: #60a5fa; font-size: 22px; }
+        .cash-total-row .dash-val { color: #3b82f6; font-size: 22px; text-shadow: 0 0 12px rgba(59, 130, 246, 0.35); }
         
-        .grid-actions { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-main { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .grid-actions { display: flex; gap: 12px; margin-bottom: 20px; }
+        .btn-main { flex: 1; padding: 14px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.3); transition: background 0.2s; }
         .btn-main.success { background: #10b981; color: white; }
+        .btn-main.success:active { background: #059669; }
         .btn-main.danger { background: #ef4444; color: white; }
+        .btn-main.danger:active { background: #dc2626; }
         
-        .history-title-bar { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #94a3b8; }
+        .chart-card { background: #141f32; padding: 16px; border-radius: 18px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06); }
+        .chart-container { position: relative; width: 100%; height: 230px; } 
+
+        /* ⌨️ কাস্টম কীবোর্ড */
+        .station-keyboard { 
+            position: fixed; bottom: 0; left: 0; right: 0; background: #121212; padding: 12px 10px 24px 10px; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; z-index: 9999; max-width: 480px; margin: 0 auto; border-top: 2px solid #222; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+        .key-btn { color: #ffffff; background: #222222; border: none; padding: 16px 0; border-radius: 12px; font-size: 22px; font-weight: bold; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; transition: background 0.1s; }
+        .key-btn:active { background: #333333; }
+        .key-btn.clear-btn { color: #f87171; background: #450a0a; } 
+        .key-btn.op-btn { color: #34d399; background: #022c22; } 
+        .key-btn.back-btn { color: #fbbf24; background: #451a03; } 
+        .key-btn.done-btn { background: #10b981; color: #ffffff; font-size: 24px; }
+
+        .history-title-bar { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #94a3b8; padding: 0 4px; }
         .btn-clear-all { background: none; border: none; color: #f87171; cursor: pointer; font-weight: bold; }
         .history-box { display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; }
-        .log-item { background: #1e293b; padding: 10px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .log-item { background: #141f32; padding: 12px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #38bdf8; }
         .log-time { font-size: 11px; color: #94a3b8; }
-        .log-liters { font-size: 13px; color: #38bdf8; font-weight: bold; }
-        .log-time-group { display: flex; flex-direction: column; }
-        .log-money { font-size: 15px; color: #10b981; font-weight: bold; }
+        .log-liters { font-size: 15px; color: #38bdf8; font-weight: bold; margin-top: 2px; }
+        .log-money { font-size: 16px; color: #10b981; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="app-header">
-            <h1>⛽ Al-Jeezar Station Pro</h1>
-            <p>Automated Sales Intelligence | حاسبة الوقود الذكية</p>
+            <h1>⛽ Fadoli Station Pro</h1>
+            <div class="live-clock" id="liveClock">Loading...</div>
         </div>
 
-        <!-- General Fuel Price -->
-        <div class="glass-card">
+        <!-- Fuel Rate -->
+        <div class="glass-card" style="border-left: 4px solid #38bdf8;">
             <div class="card-label">
-                <span>Fuel Rate (Per Liter)</span>
+                <span>Fuel Rate (Per Liter) <span class="bn-inline">(তেলের রেট)</span></span>
                 <span class="ar-text">سعر اللتر</span>
             </div>
-            <input type="number" id="priceInput" class="neo-input" value="458" oninput="runEngine()">
+            <div class="input-container-rel">
+                <input type="text" id="priceInput" class="neo-input" value="458">
+                <span id="cursor_priceInput" class="custom-cursor"></span>
+            </div>
         </div>
 
-        <!-- Start Input -->
-        <div class="glass-card">
+        <!-- Opening Readings -->
+        <div class="glass-card" style="border-left: 4px solid #a7f3d0;">
             <div class="card-label">
-                <span>Opening Readings</span>
-                <span class="ar-text">القراءة الأولى</span>
+                <span>Opening Readings <span class="bn-inline">(শুরু)</span></span>
+                <div class="camera-btn-wrapper">
+                    <button class="btn-scan">📷 CAMERA SCAN</button>
+                    <input type="file" accept="image/*" capture="camera" class="hidden-camera-input" onchange="processOCR(this, 'startInput')">
+                </div>
             </div>
             <div class="input-group">
-                <input type="text" id="startInput" class="neo-input" placeholder="12345" oninput="runEngine()">
+                <div class="input-container-rel">
+                    <input type="text" id="startInput" class="neo-input" placeholder="0" readonly>
+                    <span id="cursor_startInput" class="custom-cursor"></span>
+                </div>
                 <button class="btn-lock" onclick="lockOpeningData()">🔒 LOCK</button>
             </div>
+            <div id="scanStatus_startInput" class="scan-status">Processing Image... 🧠</div>
         </div>
 
-        <!-- End Input -->
-        <div class="glass-card">
+        <!-- Closing Readings -->
+        <div class="glass-card" style="border-left: 4px solid #f43f5e;">
             <div class="card-label">
-                <span>Closing Readings</span>
-                <span class="ar-text">القراءة الأخيرة</span>
+                <span>Closing Readings <span class="bn-inline">(শেষ)</span></span>
+                <div class="camera-btn-wrapper">
+                    <button class="btn-scan">📷 CAMERA SCAN</button>
+                    <input type="file" accept="image/*" capture="camera" class="hidden-camera-input" onchange="processOCR(this, 'endInput')">
+                </div>
             </div>
-            <input type="text" id="endInput" class="neo-input" placeholder="12345" oninput="runEngine()">
+            <div class="input-container-rel">
+                <input type="text" id="endInput" class="neo-input" placeholder="0" readonly>
+                <span id="cursor_endInput" class="custom-cursor"></span>
+            </div>
+            <div id="scanStatus_endInput" class="scan-status">Processing Image... 🧠</div>
         </div>
 
-        <!-- Company Slip Input with Inline Rate Box -->
+        <!-- Company Slips (৪৬০ বর্ডার পারফেক্ট ফিক্সড) -->
         <div class="glass-card" style="border-left: 4px solid #fbbf24;">
             <div class="card-label">
                 <span style="color:#fbbf24;">Company Slips (Liters) & Rate</span>
                 <span class="ar-text">وصل الشركات والشركة</span>
             </div>
             <div class="input-group">
-                <input type="text" id="slipInput" class="neo-input" placeholder="Liters (12345)" oninput="runEngine()">
-                <input type="number" id="slipPriceInput" class="neo-input slip-rate-box" value="460" placeholder="Rate" oninput="runEngine()">
+                <div class="input-container-rel">
+                    <input type="text" id="slipInput" class="neo-input" placeholder="0" readonly>
+                    <span id="cursor_slipInput" class="custom-cursor"></span>
+                </div>
+                <!-- 👑 ৪৬০ রেট বক্স - এখন সম্পূর্ণ গোল ও নিখুঁত বর্ডার -->
+                <div class="input-container-rel" style="flex: none; display: block;">
+                    <input type="text" id="slipPriceInput" class="neo-input slip-rate-box" value="460" readonly>
+                    <span id="cursor_slipPriceInput" class="custom-cursor"></span>
+                </div>
             </div>
         </div>
 
-        <!-- Card / POS Payment Input -->
-        <div class="glass-card" style="border-left: 4px solid #60a5fa;">
+        <!-- Card Payment -->
+        <div class="glass-card" style="border-left: 4px solid #3b82f6;">
             <div class="card-label">
-                <span style="color:#60a5fa;">Card Payment / POS (Money)</span>
+                <span>Card Payment / POS (Money)</span>
                 <span class="ar-text">الدفع بالبطاقة</span>
             </div>
-            <input type="text" id="cardPaymentInput" class="neo-input" placeholder="12345" oninput="runEngine()">
+            <div class="input-container-rel">
+                <input type="text" id="cardPaymentInput" class="neo-input" placeholder="0" readonly>
+                <span id="cursor_cardPaymentInput" class="custom-cursor"></span>
+            </div>
         </div>
 
-        <!-- Dashboard Panel -->
+        <!-- ড্যাশবোর্ড প্যানেল -->
         <div class="dashboard-panel">
             <div class="dash-row">
-                <span class="en-text">Total Opening<small>إجمالي الصباح</small></span>
+                <span class="en-text">Total Opening<small>إجمالي الصباح (শুরু)</small></span>
                 <span id="viewStart" class="dash-val">0</span>
             </div>
             <div class="dash-row">
-                <span class="en-text">Total Closing<small>إجمالي الليل</small></span>
+                <span class="en-text">Total Closing<small>إجمالي الليل (শেষ)</small></span>
                 <span id="viewEnd" class="dash-val">0</span>
             </div>
             <div class="dash-row">
@@ -141,13 +251,18 @@
             </div>
         </div>
 
-        <!-- Buttons -->
+        <div class="chart-card">
+            <div class="card-label"><span>📊 Shift Volume (বিক্রি হওয়া লিটার)</span></div>
+            <div class="chart-container">
+                <canvas id="analyticsChart"></canvas>
+            </div>
+        </div>
+
         <div class="grid-actions">
             <button class="btn-main success" onclick="commitRecord()">💾 SAVE REPORT</button>
             <button class="btn-main danger" onclick="clearClosingField()">CLEAR END</button>
         </div>
 
-        <!-- History -->
         <div class="history-section">
             <div class="history-title-bar">
                 <span>📊 SHIFT LOGS | السجلات</span>
@@ -157,109 +272,301 @@
         </div>
     </div>
 
+    <!-- কীবোর্ড -->
+    <div class="station-keyboard" id="customKeyboard">
+        <div class="key-btn clear-btn" onclick="pressKey('CLEAR')">C</div>
+        <div class="key-btn op-btn" onclick="pressKey('%')">%</div>
+        <div class="key-btn back-btn" onclick="pressKey('BACK')">⌫</div>
+        <div class="key-btn op-btn" onclick="pressKey('/')">÷</div>
+        <div class="key-btn" onclick="pressKey('7')">7</div>
+        <div class="key-btn" onclick="pressKey('8')">8</div>
+        <div class="key-btn" onclick="pressKey('9')">9</div>
+        <div class="key-btn op-btn" onclick="pressKey('*')">×</div>
+        <div class="key-btn" onclick="pressKey('4')">4</div>
+        <div class="key-btn" onclick="pressKey('5')">5</div>
+        <div class="key-btn" onclick="pressKey('6')">6</div>
+        <div class="key-btn op-btn" onclick="pressKey('-')">−</div>
+        <div class="key-btn" onclick="pressKey('1')">1</div>
+        <div class="key-btn" onclick="pressKey('2')">2</div>
+        <div class="key-btn" onclick="pressKey('3')">3</div>
+        <div class="key-btn op-btn" onclick="pressKey('+')">+</div>
+        <div class="key-btn" style="color: #38bdf8;" onclick="pressKey('HIDE')">⇊</div>
+        <div class="key-btn" onclick="pressKey('0')">0</div>
+        <div class="key-btn" onclick="pressKey('.')">.</div>
+        <div class="key-btn done-btn" onclick="pressKey('DONE')">=</div>
+    </div>
+
     <script>
+        Chart.register(ChartDataLabels);
+
+        let currentActiveInput = null;
+        let myChart = null;
+
         window.onload = function() {
             var cachedStart = localStorage.getItem("pro_station_start");
             if (cachedStart) { document.getElementById('startInput').value = cachedStart; }
             renderLogs();
+            initChart(); 
+            setupInputFocus();
             runEngine();
+            initClock();
         };
 
-        function parseFormula(inputStr) {
-            if (!inputStr) return 0;
-            var segments = inputStr.split('+');
-            var grandSum = 0;
-            for (var i = 0; i < segments.length; i++) {
-                var processed = segments[i].replace(/,/g, '').trim();
-                if (processed !== '') {
-                    var num = parseFloat(processed);
-                    if (!isNaN(num)) { grandSum += num; }
-                }
+        function initClock() {
+            function updateClock() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+                document.getElementById('liveClock').innerText = now.toLocaleString('en-US', options);
             }
-            return grandSum;
+            updateClock();
+            setInterval(updateClock, 1000);
         }
 
-        // কার্ড ইনপুটের জন্য বিশেষ ফাংশন (যা শর্টকাট সংখ্যাকে ১০০০ দিয়ে গুণ করবে)
-        function parseCardFormula(inputStr) {
-            if (!inputStr) return 0;
-            var segments = inputStr.split('+');
-            var grandSum = 0;
-            for (var i = 0; i < segments.length; i++) {
-                var processed = segments[i].replace(/,/g, '').trim();
-                if (processed !== '') {
-                    var num = parseFloat(processed);
-                    if (!isNaN(num)) { 
-                        // যদি ইনপুট ১০০ এর কম হয় (যেমন ৭, ১০, ১৩), তবে তাকে ১০০০ দিয়ে গুণ করে ট্রিপল জিরো করা হবে
-                        if (num < 100) {
-                            grandSum += (num * 1000);
-                        } else {
-                            grandSum += num;
+        function processOCR(inputElement, targetId) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const statusDiv = document.getElementById('scanStatus_' + targetId);
+            statusDiv.style.display = 'block';
+            statusDiv.innerText = "⚡ Reading Numbers... Please Wait.";
+
+            Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+                let numbersOnly = text.replace(/[^0-9]/g, '');
+                if (numbersOnly.length > 0) {
+                    document.getElementById(targetId).value = numbersOnly;
+                    statusDiv.innerText = "✅ Auto-filled: " + numbersOnly;
+                    runEngine();
+                    updateCursorPosition(); 
+                } else {
+                    statusDiv.innerText = "❌ Text unclear. Please input manually.";
+                }
+                setTimeout(() => { statusDiv.style.display = 'none'; }, 4000);
+            }).catch(err => {
+                statusDiv.innerText = "⚠️ OCR Engine Error.";
+                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+            });
+            inputElement.value = '';
+        }
+
+        function initChart() {
+            var database = JSON.parse(localStorage.getItem("pro_station_logs")) || [];
+            var displayData = database.slice(0, 4).reverse();
+
+            var labels = displayData.map((item, index) => {
+                if (index === displayData.length - 1) return "Current";
+                return "Prev " + (displayData.length - 1 - index);
+            });
+            
+            if(labels.length === 0) labels = ['No Data'];
+            var litersData = displayData.map(item => parseFloat(item.volume) || 0);
+
+            var ctx = document.getElementById('analyticsChart').getContext('2d');
+            if (myChart) { myChart.destroy(); }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ 
+                        label: 'Liters Sold', 
+                        data: litersData.length ? litersData : [0], 
+                        backgroundColor: '#38bdf8', 
+                        borderRadius: 8,
+                        barPercentage: 0.5 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { top: 20 } },
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: {
+                            display: true,
+                            align: 'top',
+                            anchor: 'end',
+                            offset: 2,
+                            color: '#38bdf8',
+                            font: { size: 13, weight: 'bold' }, 
+                            formatter: function(value) {
+                                return value === 0 ? '' : value.toFixed(2) + ' L';
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { color: '#94a3b8', font: { size: 12, weight: 'bold' } } 
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8' },
+                            title: { display: true, text: 'Volume (Liters)', color: '#38bdf8', font: { weight: 'bold' } }
                         }
                     }
                 }
+            });
+        }
+
+        function setupInputFocus() {
+            const inputs = document.querySelectorAll('.neo-input');
+            inputs.forEach(input => {
+                input.setAttribute('readonly', 'true'); 
+                
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    inputs.forEach(i => i.classList.remove('active-focused'));
+                    document.querySelectorAll('.custom-cursor').forEach(c => c.style.display = 'none');
+                    
+                    currentActiveInput = this;
+                    this.classList.add('active-focused');
+                    
+                    document.getElementById('customKeyboard').style.display = 'grid';
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    updateCursorPosition();
+                });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('neo-input') && !e.target.closest('#customKeyboard') && !e.target.closest('.camera-btn-wrapper') && !e.target.closest('.btn-lock')) {
+                    hideKeyboardAndCursor();
+                }
+            });
+        }
+
+        function updateCursorPosition() {
+            if (!currentActiveInput) return;
+            
+            const cursorId = 'cursor_' + currentActiveInput.id;
+            const cursorEl = document.getElementById(cursorId);
+            if (!cursorEl) return;
+            
+            const helperSpan = document.createElement('span');
+            helperSpan.style.font = window.getComputedStyle(currentActiveInput).font;
+            helperSpan.style.visibility = 'hidden';
+            helperSpan.style.position = 'absolute';
+            helperSpan.style.whiteSpace = 'pre';
+            helperSpan.innerText = currentActiveInput.value || currentActiveInput.placeholder || '';
+            document.body.appendChild(helperSpan);
+            
+            const textWidth = helperSpan.getBoundingClientRect().width;
+            document.body.removeChild(helperSpan);
+            
+            const inputWidth = currentActiveInput.getBoundingClientRect().width;
+            const paddingLeft = parseFloat(window.getComputedStyle(currentActiveInput).paddingLeft) || 16;
+            const paddingRight = parseFloat(window.getComputedStyle(currentActiveInput).paddingRight) || 16;
+            const maxVisibleWidth = inputWidth - paddingLeft - paddingRight;
+
+            if (textWidth > maxVisibleWidth) {
+                cursorEl.style.left = (inputWidth - paddingRight - 2) + 'px';
+            } else {
+                cursorEl.style.left = (paddingLeft + textWidth) + 'px';
             }
-            return grandSum;
+            
+            cursorEl.style.display = 'inline-block';
+            currentActiveInput.scrollLeft = currentActiveInput.scrollWidth;
+        }
+
+        function hideKeyboardAndCursor() {
+            document.getElementById('customKeyboard').style.display = 'none';
+            if (currentActiveInput) {
+                currentActiveInput.classList.remove('active-focused');
+                const cursorId = 'cursor_' + currentActiveInput.id;
+                const cursorEl = document.getElementById(cursorId);
+                if (cursorEl) cursorEl.style.display = 'none';
+            }
+            currentActiveInput = null;
+        }
+
+        function pressKey(key) {
+            if (!currentActiveInput) return;
+            let currentVal = currentActiveInput.value;
+            if (key === 'CLEAR') { currentActiveInput.value = ''; }
+            else if (key === 'BACK') { currentActiveInput.value = currentVal.slice(0, -1); }
+            else if (key === 'DONE' || key === 'HIDE') { hideKeyboardAndCursor(); return; }
+            else { currentActiveInput.value = currentVal + key; }
+            
+            updateCursorPosition(); 
+            runEngine();
+        }
+
+        function evalAdvancedFormula(inputStr) {
+            if (!inputStr) return 0;
+            try {
+                let sanitized = inputStr.toString().replace(/,/g, '').replace(/[^0-9+\-*/.%]/g, '');
+                if(!sanitized) return 0;
+                if (sanitized.includes('%')) { sanitized = sanitized.replace(/([0-9.]+)\%/g, "($1/100)"); }
+                let result = new Function('return ' + sanitized)();
+                return isNaN(result) || !isFinite(result) ? 0 : result;
+            } catch (e) { return 0; }
+        }
+
+        function parseCardFormula(inputStr) {
+            if (!inputStr) return 0;
+            try {
+                let sanitized = inputStr.toString().replace(/,/g, '');
+                if (!sanitized) return 0;
+                let segments = sanitized.split('+');
+                let grandSum = 0;
+                for (let i = 0; i < segments.length; i++) {
+                    let segment = segments[i].trim();
+                    if(segment) {
+                        let val = evalAdvancedFormula(segment);
+                        if (val > 0 && val < 100) { grandSum += (val * 1000); } else { grandSum += val; }
+                    }
+                }
+                return grandSum;
+            } catch(e) { return 0; }
         }
 
         var GlobalLiters = 0; var GlobalAmount = 0; var NetCash = 0;
 
         function runEngine() {
-            var fuelPrice = parseFloat(document.getElementById('priceInput').value) || 0;
-            var slipPrice = parseFloat(document.getElementById('slipPriceInput').value) || 0; 
-            var openingRaw = document.getElementById('startInput').value;
-            var closingRaw = document.getElementById('endInput').value;
-            var slipsRaw = document.getElementById('slipInput').value;
-            var cardsRaw = document.getElementById('cardPaymentInput').value;
+            var fuelPrice = evalAdvancedFormula(document.getElementById('priceInput').value);
+            var slipPrice = evalAdvancedFormula(document.getElementById('slipPriceInput').value); 
+            var sumOpening = evalAdvancedFormula(document.getElementById('startInput').value);
+            var sumClosing = evalAdvancedFormula(document.getElementById('endInput').value);
+            var sumSlipsLiters = evalAdvancedFormula(document.getElementById('slipInput').value);
+            var sumCardsMoney = parseCardFormula(document.getElementById('cardPaymentInput').value);
 
-            var sumOpening = parseFormula(openingRaw);
-            var sumClosing = parseFormula(closingRaw);
-            var sumSlipsLiters = parseFormula(slipsRaw);
-            var sumCardsMoney = parseCardFormula(cardsRaw); // ট্রিপল জিরো অটো-কনভার্ট হবে
-
-            // ১. টোটাল মিটার লিটার বের করা
             GlobalLiters = sumClosing - sumOpening;
             if (GlobalLiters < 0) GlobalLiters = 0;
 
-            // ২. আসল তেলের বেচা বিক্রি = মিটারের মোট লিটার * মেইন তেলের রেট
             var totalMeterValue = GlobalLiters * fuelPrice;
-            
-            // ৩. কোম্পানির স্লিপের টাকা = স্লিপ লিটার * স্লিপ রেট
             var slipsAmount = sumSlipsLiters * slipPrice; 
 
-            // ৪. Total Amount Due = মিটারের মোট টাকা থেকে কোম্পানির স্লিপের টাকা মাইনাস (MINUS)
             GlobalAmount = totalMeterValue - slipsAmount;
-
-            // ৫. Net Cash To Collect = Total Amount থেকে আবার কার্ডের টাকাও মাইনাস (MINUS)
             NetCash = GlobalAmount - sumCardsMoney;
 
-            document.getElementById('viewStart').innerText = sumOpening.toFixed(0);
-            document.getElementById('viewEnd').innerText = sumClosing.toFixed(0);
+            document.getElementById('viewStart').innerText = sumOpening.toLocaleString();
+            document.getElementById('viewEnd').innerText = sumClosing.toLocaleString();
             document.getElementById('viewSlips').innerText = sumSlipsLiters.toFixed(2) + " L";
             document.getElementById('viewLiters').innerText = GlobalLiters.toFixed(2) + " L";
-            document.getElementById('viewAmount').innerText = GlobalAmount.toFixed(2);
-            document.getElementById('viewCash').innerText = NetCash.toFixed(2);
+            document.getElementById('viewAmount').innerText = GlobalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('viewCash').innerText = NetCash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
         function lockOpeningData() {
             var inputData = document.getElementById('startInput').value;
             if (!inputData.trim()) { alert("Enter opening data first!"); return; }
             localStorage.setItem("pro_station_start", inputData);
-            alert("Opening structure locked!");
+            alert("Opening reading locked successfully!");
         }
 
         function commitRecord() {
-            if (GlobalLiters <= 0 && parseFormula(document.getElementById('slipInput').value) <= 0) { 
-                alert("No sales record to save."); 
-                return; 
+            if (GlobalLiters <= 0 && evalAdvancedFormula(document.getElementById('slipInput').value) <= 0) { 
+                alert("No sales data available to save."); return; 
             }
             var timestamp = new Date();
-            var dateString = timestamp.toLocaleDateString();
-            var timeString = timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            var dateString = timestamp.toLocaleDateString('en-US');
+            var timeString = timestamp.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'});
 
             var logEntry = {
-                timestamp: dateString + " (" + timeString + ")",
-                volume: GlobalLiters.toFixed(2) + " L",
-                totalCash: NetCash.toFixed(2)
+                timestamp: dateString + " " + timeString,
+                volume: GlobalLiters.toFixed(2),
+                totalCash: NetCash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
             };
 
             var database = JSON.parse(localStorage.getItem("pro_station_logs")) || [];
@@ -267,11 +574,9 @@
             localStorage.setItem("pro_station_logs", JSON.stringify(database));
 
             renderLogs();
-            document.getElementById('endInput').value = '';
-            document.getElementById('slipInput').value = '';
-            document.getElementById('cardPaymentInput').value = '';
-            runEngine();
-            alert("Report saved successfully!");
+            initChart(); 
+            clearClosingField();
+            alert("Report Saved & Graph Updated!");
         }
 
         function renderLogs() {
@@ -279,16 +584,16 @@
             var logBox = document.getElementById("logBox");
             logBox.innerHTML = "";
             if (database.length === 0) {
-                logBox.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>No history found.</p>";
+                logBox.innerHTML = "<p style='color:#94a3b8; font-size:12px; text-align:center; padding:15px;'>No shift logs found.</p>";
                 return;
             }
             for (var i = 0; i < database.length; i++) {
                 var item = database[i];
                 var node = document.createElement("div");
                 node.className = "log-item";
-                node.innerHTML = '<div class="log-time-group">' +
+                node.innerHTML = '<div>' +
                                     '<div class="log-time">📅 ' + item.timestamp + '</div>' +
-                                    '<div class="log-liters">Vol: ' + item.volume + '</div>' +
+                                    '<div class="log-liters">Liters Sold: ' + item.volume + ' L</div>' +
                                  '</div>' +
                                  '<div class="log-money">Cash: ' + item.totalCash + '</div>';
                 logBox.appendChild(node);
@@ -296,7 +601,11 @@
         }
 
         function purgeLogs() {
-            if (confirm("Clear all logs?")) { localStorage.removeItem("pro_station_logs"); renderLogs(); }
+            if (confirm("Are you sure you want to delete all historical logs?")) { 
+                localStorage.removeItem("pro_station_logs"); 
+                renderLogs(); 
+                initChart(); 
+            }
         }
 
         function clearClosingField() {
